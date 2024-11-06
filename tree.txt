@@ -1,0 +1,19 @@
+infohub/
+│
+├── app/
+│   ├── __init__.py    
+│   ├── main.py            
+│   ├── models.py       
+│   ├── api.py            
+│   ├── crud.py           
+│   ├── auth.py               
+│   └── database.py        
+│
+├── migrations/   
+│
+├── tests/           
+│   ├── test_api.py   
+│   └── test_crud.py      
+│
+├── requirements.txt 
+└── README.md
