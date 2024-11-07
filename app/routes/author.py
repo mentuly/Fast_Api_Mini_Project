@@ -20,10 +20,10 @@ def all_authors():
 #         session.add(author)
 #         return "Created"
 
-@author_router.delete("/delete")
-def del_author():
+@author_router.delete("/delete/{id}")
+def del_author(id:int):
     with Session.begin() as session:
-        author = session.scalar(select(Author))
+        author = session.scalar(select(Author).where(Author.id==id))
         if not author:
             raise HTTPException(status_code=404,detail="No author with this id")
         session.delete(author)
@@ -50,7 +50,8 @@ def one_author(id:int):
 def update_author(id:int,data: Author):
     with Session.begin() as session:
         author = session.scalar(select(Author).where(Author.id == data.id))
-        
+        if not author:
+            raise HTTPException(status_code=404,detail="No author with this id")
         upd = update(Author).where(Author.id == id).values(
             name=data.name,
             email=data.email, 

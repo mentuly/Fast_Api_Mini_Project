@@ -1,7 +1,8 @@
-from sqlmodel import SQLModel,create_engine,Session
+from sqlmodel import SQLModel,create_engine
+from sqlalchemy.orm import sessionmaker
 
 
 class Config:
     ENGINE = create_engine("sqlite:///mydb.db", echo=True)
-    SESSION = Session(ENGINE)
+    SESSION = sessionmaker(ENGINE)
     BASE = SQLModel

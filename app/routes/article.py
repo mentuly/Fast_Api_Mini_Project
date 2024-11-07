@@ -46,6 +46,7 @@ def upd_article(id:int,data:Article):
         if not article:
             raise HTTPException(status_code=404,detail="No article with this id")
         upd = update(Article).where(Article.id == id).values(
+            id=id,
             title=data.title,
             content=data.content,
             author=data.author,
@@ -57,8 +58,8 @@ def upd_article(id:int,data:Article):
 
 
 
-@article_router.get("/delete_one/{id}")
-def one_article(id:int):
+@article_router.delete("/delete_one/{id}")
+def del_one_article(id:int):
     with Session() as session:
         article=session.scalar(select(Article).where(Article.id==id))
         if not article:
