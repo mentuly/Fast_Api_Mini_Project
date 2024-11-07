@@ -34,8 +34,9 @@ def del_author(id:int):
 def del_all_authors():
     with Session.begin() as session:
         authors = session.scalars(select(Author)).all()
-        session.delete(authors)
-        return "Deleted"
+        for author in authors:
+            session.delete(author)
+            return "Deleted"
     
 
 @author_router.get("/{id}")

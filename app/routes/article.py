@@ -25,8 +25,9 @@ def create_article(data:Article):
 def del_all_articles():
     with Session.begin() as session:
         articles = session.scalars(select(Article)).all()
-        session.delete(articles)
-        return "Deleted"
+        for article in articles:
+            session.delete(article)
+            return "Deleted"
     
 
 @article_router.get("/{id}")

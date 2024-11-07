@@ -27,8 +27,9 @@ def comment(data:Comment):
 def del_all_comment():
     with Session.begin() as session:
         comments = session.scalars(select(Comment)).all()
-        session.delete(comments)
-        return "Deleted"
+        for comment in comments:
+            session.delete(comment)
+            return "Deleted"
 
 
 @comment_router.get("/{id}")
