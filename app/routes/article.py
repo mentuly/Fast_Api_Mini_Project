@@ -1,4 +1,4 @@
-from fastapi import APIRouter,HTTPException
+from fastapi import APIRouter,HTTPException,status
 from ..db import Config,Article
 from sqlmodel import select,update
 
@@ -13,7 +13,7 @@ def all_articles():
         articles = session.scalars(select(Article)).all()
         return articles
 
-@article_router.post("/create")
+@article_router.post("/create",status_code=status.HTTP_201_CREATED)
 def create_article(data:Article):
     with Session.begin() as session:
         article = Article(**data.model_dump())
@@ -47,7 +47,6 @@ def upd_article(id:int,data:Article):
         if not article:
             raise HTTPException(status_code=404,detail="No article with this id")
         upd = update(Article).where(Article.id == id).values(
-            id=id,
             title=data.title,
             content=data.content,
             author=data.author,
