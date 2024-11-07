@@ -13,7 +13,6 @@ class Author(PKMixin,SQLModel,table=True):
     password:str
 
     articles:List["Article"] = Relationship(back_populates="author")
-
     comments:List["Comment"] = Relationship(back_populates="author")
 
 
