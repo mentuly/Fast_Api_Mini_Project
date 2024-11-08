@@ -1,11 +1,4 @@
-from .models import (
-    Config,
-    Comment,
-    Article,
-    ArticleRequest,
-    Author,
-    Token
-)
+from .models import Config, Comment, Article, ArticleRequest, Author, Token
 
 
 def up():
@@ -20,10 +13,11 @@ def migrate():
     down()
     up()
 
-def down():
-    Config.BASE.metadata.drop_all(Config.ENGINE)
+
+# def down():
+#     Config.BASE.metadata.drop_all(Config.ENGINE)
 
 
-def migrate():
-    down()
-    up()
+# def migrate():
+#     down()
+#     up()

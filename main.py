@@ -1,5 +1,12 @@
 import uvicorn
-from app import app, migrate,author_router,article_router,comment_router,request_router
+from app import (
+    app,
+    migrate,
+    author_router,
+    article_router,
+    comment_router,
+    request_router,
+)
 
 if __name__ == "__main__":
     migrate()
@@ -7,4 +14,4 @@ if __name__ == "__main__":
     app.include_router(article_router)
     app.include_router(comment_router)
     app.include_router(request_router)
-    uvicorn.run(app,port=8080)
+    uvicorn.run(app, port=8080)
