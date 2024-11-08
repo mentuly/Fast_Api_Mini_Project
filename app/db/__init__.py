@@ -12,12 +12,3 @@ def down():
 def migrate():
     down()
     up()
-
-
-def down():
-    Config.BASE.metadata.drop_all(Config.ENGINE)
-
-
-def migrate():
-    down()
-    up()
