@@ -14,10 +14,10 @@ def migrate():
     up()
 
 
-# def down():
-#     Config.BASE.metadata.drop_all(Config.ENGINE)
+def down():
+    Config.BASE.metadata.drop_all(Config.ENGINE)
 
 
-# def migrate():
-#     down()
-#     up()
+def migrate():
+    down()
+    up()
