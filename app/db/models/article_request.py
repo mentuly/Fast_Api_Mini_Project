@@ -4,9 +4,7 @@ from datetime import datetime
 from pydantic import model_validator
 from fastapi import HTTPException
 
-
-class ArticleRequest(SQLModel):
-    keywords:List[str]
+class DateRange(SQLModel):
     start_date:datetime
     end_date:datetime
 
@@ -18,3 +16,8 @@ class ArticleRequest(SQLModel):
         if self.end_date >= datetime.now():
             raise HTTPException(status_code=400,detail="End date cannot be in future")
         return self
+
+
+class ArticleRequest(DateRange):
+    keywords:List[str]
+    

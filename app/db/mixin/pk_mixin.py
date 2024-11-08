@@ -1,5 +1,7 @@
 from sqlmodel import Field,SQLModel
+from typing import Annotated
+
 
 
 class PKMixin(SQLModel):
-    id:int = Field(primary_key=True)
+    id:Annotated[int, Field(primary_key=True,exclude=True)]
