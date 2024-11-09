@@ -1,24 +1,28 @@
 from fastapi import APIRouter,HTTPException,status,Depends
-from ..db import Article
+from ..db import Article,Author
 from sqlmodel import select,update,Session
-from ..utils import get_session
+from ..utils import get_session,get_current_user
 from typing import Annotated
+from ..logging.middleware import request_logging_dependency
 
 
 
 
-article_router=APIRouter(prefix="/articles", tags=["Article"])
+article_router=APIRouter(prefix="/articles", tags=["Article"],dependencies=[Depends(request_logging_dependency)])
 
 
 @article_router.post("/create",status_code=status.HTTP_201_CREATED)
-def create_article(data:Article,session:Annotated[Session,Depends(get_session)]):
+def create_article(data:Article,
+                   session:Annotated[Session,Depends(get_session)],
+                   current_user: Annotated[Author, Depends(get_current_user)],):
     article = Article(**data.model_dump())
     session.add(article)
     return "Created"
     
 
 @article_router.delete("/delete_all")
-def del_all_articles(session:Annotated[Session,Depends(get_session)]):
+def del_all_articles(session:Annotated[Session,Depends(get_session)],
+                     current_user: Annotated[Author, Depends(get_current_user)]):
     articles = session.scalars(select(Article)).all()
     for article in articles:
         session.delete(article)
@@ -28,7 +32,10 @@ def del_all_articles(session:Annotated[Session,Depends(get_session)]):
 
 
 @article_router.put("/{id}")
-def upd_article(id:int,data:Article,session:Annotated[Session,Depends(get_session)]):
+def upd_article(id:int,
+                data:Article,
+                session:Annotated[Session,Depends(get_session)],
+                current_user: Annotated[Author, Depends(get_current_user)]):
     article= session.scalar(select(Article).where(Article.id==id))
     if not article:
         raise HTTPException(status_code=404,detail="No article with this id")
@@ -39,7 +46,9 @@ def upd_article(id:int,data:Article,session:Annotated[Session,Depends(get_sessio
 
 
 @article_router.delete("/delete_one/{id}")
-def del_one_article(id:int,session:Annotated[Session,Depends(get_session)]):
+def del_one_article(id:int,
+                    session:Annotated[Session,Depends(get_session)],
+                    current_user: Annotated[Author, Depends(get_current_user)]):
     article=session.scalar(select(Article).where(Article.id==id))
     if not article:
         raise HTTPException(status_code=404,detail="No article with this id")

@@ -9,3 +9,4 @@ from .article import article_router
 from .comment import comment_router 
 from .author import author_router
 from .request import request_router
+from .auth import auth_router

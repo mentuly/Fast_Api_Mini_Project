@@ -14,8 +14,8 @@ request_router=APIRouter(prefix="/request",tags=["Request"])
 def request(data:ArticleRequest,session:Annotated[Session,Depends(get_session)]):
     response=[]
     keywords=data.keywords
-    end_date=data.end_date
-    start_date=data.start_date
+    end_date=data.date_range.end_date
+    start_date=data.date_range.start_date
     articles = session.scalars(select(Article).where(Article.published_at>=start_date,Article.published_at<=end_date))
     if not articles:
         raise HTTPException(status_code=402,detail="No article matches your request")
