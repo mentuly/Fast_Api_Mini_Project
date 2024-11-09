@@ -1,4 +1,4 @@
-from .models import Config, Comment, Article, ArticleRequest, Author, Token
+from .models import Config, Comment, Article, ArticleRequest, Author, Token, TokenData
 
 
 def up():

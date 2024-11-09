@@ -5,7 +5,7 @@ from sqlmodel import Session, select
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
-from ..db import Token, Author
+from ..db import TokenData, Author
 from ..utils import (
     authenticate_user,
     create_access_token,
@@ -24,7 +24,7 @@ auth_router = APIRouter(
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     session: Annotated[Session, Depends(get_session)],
-) -> Token:
+) -> TokenData:
     user = authenticate_user(form_data.username, form_data.password, session)
     if not user:
         raise HTTPException(
@@ -36,7 +36,7 @@ async def login_for_access_token(
     access_token = create_access_token(
         data={"sub": user.name}, expires_delta=access_token_expires
     )
-    return Token(access_token=access_token, token_type="bearer")
+    return TokenData(access_token=access_token, token_type="bearer")
 
 
 @auth_router.post("/register", status_code=status.HTTP_201_CREATED)
