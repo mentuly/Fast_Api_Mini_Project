@@ -2,7 +2,7 @@ from os import getenv
 from typing import Annotated
 from datetime import timedelta, datetime, timezone
 
-from sqlmodel import select,Session
+from sqlmodel import select, Session
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from dotenv import load_dotenv
@@ -10,10 +10,8 @@ import jwt
 from jwt.exceptions import InvalidTokenError
 
 from . import get_session
-from ..db import Author,Token
+from ..db import Author, Token
 from .help import verify_password
-
-
 
 
 load_dotenv()
@@ -31,9 +29,9 @@ def authenticate_user(
 ):
     user = session.scalar(select(Author).where(Author.name == username))
     if not user:
-        raise HTTPException(status_code=404,detail="No author with this name")
+        raise HTTPException(status_code=404, detail="No author with this name")
     if not verify_password(password, user.password):
-        raise HTTPException(status_code=400,detail="Wrong password")
+        raise HTTPException(status_code=400, detail="Wrong password")
     return user
 
 

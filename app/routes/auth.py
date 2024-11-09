@@ -1,17 +1,23 @@
 from typing import Annotated
 from datetime import timedelta
 
-from sqlmodel import Session,select
+from sqlmodel import Session, select
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from ..db import Token, Author
-from ..utils import authenticate_user, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES,get_session
+from ..utils import (
+    authenticate_user,
+    create_access_token,
+    ACCESS_TOKEN_EXPIRE_MINUTES,
+    get_session,
+)
 from ..logging.middleware import request_logging_dependency
 
 
-
-auth_router = APIRouter(prefix="/auth", tags=["Auth"], dependencies=[Depends(request_logging_dependency)])
+auth_router = APIRouter(
+    prefix="/auth", tags=["Auth"], dependencies=[Depends(request_logging_dependency)]
+)
 
 
 @auth_router.post("/token")

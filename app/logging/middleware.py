@@ -1,6 +1,7 @@
+from datetime import datetime
 from fastapi import Request
 from .logg import requests_logger
-from datetime import datetime
+
 
 def log_request(request: Request):
     request_time = datetime.now()
@@ -11,6 +12,7 @@ def log_request(request: Request):
         f"Request Time: {request_time}, Handler: {request.url.path}, Method: {request.method}, "
         f"Headers: {headers}, Body: {body}, User-Agent: {headers.get('user-agent')}"
     )
+
 
 def request_logging_dependency(request: Request):
     log_request(request)
