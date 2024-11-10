@@ -25,6 +25,15 @@ async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     session: Annotated[Session, Depends(get_session)],
 ) -> TokenData:
+    """
+    Login for access token (first register):
+
+    - **username (name)**: username
+    - **password**: password
+    - **scope**: optional
+    - **client id**: id of client - optional
+    - **client secret**: secret of client - optional
+    """
     user = authenticate_user(form_data.username, form_data.password, session)
     if not user:
         raise HTTPException(
@@ -41,8 +50,17 @@ async def login_for_access_token(
 
 @auth_router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register_user(
-    data: Author, session: Annotated[Session, Depends(get_session)]
+    data: Author, 
+    session: Annotated[Session, Depends(get_session)]
 ):
+    """
+    Register:
+
+    - **name**: your name
+    - **e-mail**: should be valid e-mail adress (should not be already registered)
+    - **bio**: your biography - optional, max length - 50
+    - **password**: your password
+    """
     user = session.scalar(select(Author).where(Author.email == data.email))
     if user:
         raise HTTPException(status_code=400, detail="Email already registered")
