@@ -16,7 +16,12 @@ comment_router = APIRouter(
 
 
 @comment_router.get("/all_comment")
-def all_comment(session: Annotated[Session, Depends(get_session)]):
+def all_comment(
+    session: Annotated[Session, Depends(get_session)]
+):
+    """
+    See all comments
+    """
     resp = []
     comments = session.scalars(select(Comment)).all()
     for comment in comments:
@@ -30,6 +35,13 @@ def comment(
     session: Annotated[Session, Depends(get_session)],
     current_user: Annotated[Author, Depends(get_current_user)],
 ):
+    """
+    Create a comment with all the information:
+
+    - **published at**: date when this comment was published (cannot be in future,default date - todays date)
+    - **content**: content of a comment
+    - **author id**: id of an author who wrote this comment
+    """
     comment = Comment(**data.model_dump())
     session.add(comment)
     return "Created"
@@ -40,6 +52,9 @@ def del_all_comment(
     session: Annotated[Session, Depends(get_session)],
     current_user: Annotated[Author, Depends(get_current_user)],
 ):
+    """
+    Delete all comments
+    """
     comments = session.scalars(select(Comment)).all()
     for comment in comments:
         session.delete(comment)
@@ -47,7 +62,15 @@ def del_all_comment(
 
 
 @comment_router.get("/{id}")
-def one_comment(id: int, session: Annotated[Session, Depends(get_session)]):
+def one_comment(
+    id: int, 
+    session: Annotated[Session, Depends(get_session)]
+):
+    """
+    See one comment with details:
+
+    - **id**: comment's id
+    """
     comment = session.scalar(select(Comment).where(Comment.id == id))
     if not comment:
         raise HTTPException(status_code=404, detail="Comment not found")
@@ -61,6 +84,15 @@ def update_comment(
     session: Annotated[Session, Depends(get_session)],
     current_user: Annotated[Author, Depends(get_current_user)],
 ):
+    """
+    Update one comment:
+
+    - **id**: comment's id
+
+    - **published at**: new date (cannot be in future,default date - todays date)
+    - **content**: new content
+    - **author id**: id of an author who wrote this comment
+    """
     comment = session.scalar(select(Comment).where(Comment.id == id))
     if not comment:
         raise HTTPException(status_code=404, detail="Comment not found")
@@ -75,6 +107,11 @@ def del_one_comment(
     session: Annotated[Session, Depends(get_session)],
     current_user: Annotated[Author, Depends(get_current_user)],
 ):
+    """
+    Delete one comment:
+
+    - **id**: comment's id
+    """
     comment = session.scalar(select(Comment).where(Comment.id == id))
     if not comment:
         raise HTTPException(status_code=404, detail="No comment with this id")

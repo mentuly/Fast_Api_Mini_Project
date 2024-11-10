@@ -10,6 +10,13 @@ request_router = APIRouter(prefix="/request", tags=["Request"])
 
 @request_router.post("")
 def request(data: ArticleRequest, session: Annotated[Session, Depends(get_session)]):
+    """
+    Search for articles with this parameters:
+
+    - **keywords**: list of words which an article you search for should have
+    - **date range**: search for an article in date range that you choose (start date: should be before end date and not in future,
+                                                                           end date: should not be in future)
+    """
     response = []
     keywords = data.keywords
     end_date = data.date_range.end_date

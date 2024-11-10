@@ -19,6 +19,15 @@ def create_article(
     session: Annotated[Session, Depends(get_session)],
     current_user: Annotated[Author, Depends(get_current_user)],
 ):
+    """
+    Create an article with all the information:
+
+    - **published at**: date when this article was published (cannot be in future,default date - todays date)
+    - **title**: each article must have a title
+    - **content**: content of an article
+    - **tags**: tags
+    - **author id**: id of an author who wrote this article
+    """
     article = Article(**data.model_dump())
     session.add(article)
     return "Created"
@@ -29,6 +38,9 @@ def del_all_articles(
     session: Annotated[Session, Depends(get_session)],
     current_user: Annotated[Author, Depends(get_current_user)],
 ):
+    """
+    Delete all articles
+    """
     articles = session.scalars(select(Article)).all()
     for article in articles:
         session.delete(article)
@@ -42,6 +54,17 @@ def upd_article(
     session: Annotated[Session, Depends(get_session)],
     current_user: Annotated[Author, Depends(get_current_user)],
 ):
+    """
+    Update one article:
+
+    - **id**: article's id
+
+    - **published at**: new date (cannot be in future,default date - todays date)
+    - **title**: new title
+    - **content**: new content
+    - **tags**: new tags
+    - **author id**: id of an author who wrote this article
+    """
     article = session.scalar(select(Article).where(Article.id == id))
     if not article:
         raise HTTPException(status_code=404, detail="No article with this id")
@@ -56,6 +79,11 @@ def del_one_article(
     session: Annotated[Session, Depends(get_session)],
     current_user: Annotated[Author, Depends(get_current_user)],
 ):
+    """
+    Delete one article:
+
+    - **id**: article's id
+    """
     article = session.scalar(select(Article).where(Article.id == id))
     if not article:
         raise HTTPException(status_code=404, detail="No article with this id")
