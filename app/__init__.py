@@ -1,4 +1,3 @@
-from fastapi import FastAPI
 from .db import migrate
 from .routes import (
     app,
