@@ -15,8 +15,8 @@ comment_router = APIRouter(
 )
 
 
-@comment_router.get("/all_comment")
-def all_comment(
+@comment_router.get("/all")
+def all_comments(
     session: Annotated[Session, Depends(get_session)]
 ):
     """
@@ -47,7 +47,7 @@ def comment(
     return "Created"
 
 
-@comment_router.delete("/all")
+@comment_router.delete("/delete_all")
 def del_all_comment(
     session: Annotated[Session, Depends(get_session)],
     current_user: Annotated[Author, Depends(get_current_user)],
