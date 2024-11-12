@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, status
 from sqlmodel import select, Session
 from ..db import ArticleRequest, Article
 from ..utils import get_session
@@ -27,7 +27,7 @@ def request(data: ArticleRequest, session: Annotated[Session, Depends(get_sessio
         )
     )
     if not articles:
-        raise HTTPException(status_code=402, detail="No article matches your request")
+        raise HTTPException(status_code=204, detail="No article matches your request")
     for article in articles:
         if any(w in article.content for w in keywords):
             response.append(article)
