@@ -17,5 +17,5 @@ class PUBMixin(SQLModel):
                 "Model: PUBMixin, Field: published_at, Result: Failed (date in future)"
             )
             raise HTTPException(status_code=400, detail="Date cannot be in future")
-        validations_logger.info("Model: PUBMixin, Field: created_at, Result: Success")
+        validations_logger.info("Model: PUBMixin, Field: published_at, Result: Success")
         return self
