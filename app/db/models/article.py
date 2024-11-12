@@ -1,5 +1,3 @@
-from typing import List
-
 from sqlmodel import SQLModel, Relationship, Field
 
 from ..mixin import PKMixin, PUBMixin
